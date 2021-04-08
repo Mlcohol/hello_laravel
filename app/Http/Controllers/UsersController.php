@@ -4,15 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Auth;
 
 class UsersController extends Controller
 {
     public function create(){
         return view('users.create');
     }
+
     public function show(User $user){
         return view('users.show',compact('user'));
     }
+
     public function store(Request $request){
         $this -> validate($request,[
             'name' => 'required|unique:users|min:3|max:50',
@@ -25,6 +28,8 @@ class UsersController extends Controller
             'email' => $request -> email,
             'password' => bcrypt($request -> password)
         ]);
+
+        Auth::login($user);
 
         session()->flash('success','欢迎，你将在这里开启一段新的旅程~');
 
