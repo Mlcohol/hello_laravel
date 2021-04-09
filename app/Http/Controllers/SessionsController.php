@@ -12,6 +12,9 @@ class SessionsController extends Controller
         $this->middleware('guest', [
             'only' => ['create']
         ]);
+        $this->middleware('throttle:10,10', [
+            'only' => ['store']
+        ]);
 
         // 限流 10 分钟十次
         $this->middleware('throttle:10,10', [
@@ -51,11 +54,8 @@ class SessionsController extends Controller
         session()->flash('success', '您已成功退出！');
         return redirect('login');
     }
-    public function __construct()
-    {
-        $this->middleware('guest', [
-            'only' => ['create']
-        ]);
-    }
+
+
+
 
 }
